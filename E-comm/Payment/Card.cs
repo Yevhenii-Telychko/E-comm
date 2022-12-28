@@ -8,7 +8,7 @@
 
         public Card(string cardNumber, string cardPassword, string cvv)
         {
-            if (!ValidateCard(cardNumber, cardPassword, cvv))
+            if (!IsValid(cardNumber, cardPassword, cvv))
             {
                 throw new Exception("Please enter valid credentials");
             }
@@ -19,13 +19,18 @@
 
 
 
-        private bool ValidateCard(string cardNumber, string cardPassword, string cvv)
+        private bool IsValid(string cardNumber, string cardPassword, string cvv)
         {
             if (cardNumber == null || cardPassword == null || cvv == null)
             {
                 return false;
             }
             return cardNumber.Length == 16 && cardPassword.Length == 4 && cvv.Length == 3;
+        }
+
+        public void Pay(int amount)
+        {
+
         }
     }
 }

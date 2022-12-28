@@ -8,6 +8,7 @@
             CustomerController userController = new CustomerController();
             List<Customer> customerList = new List<Customer> { userController.getBaseCustomer(), userController.getVipCustomer() };
             Customer customer;
+
             Console.WriteLine("Welcome to our store\n" +
                 "Which customer are you:" +
                 "\n1. Customer" +
@@ -27,8 +28,10 @@
                     customer = customerList[0];
                     break;
             }
+
             Console.WriteLine($"Welcome {customer.Name} {customer.Surname}.");
             customer.ShowAllMoney();
+
             bool isWorking = true;
             while (isWorking)
             {

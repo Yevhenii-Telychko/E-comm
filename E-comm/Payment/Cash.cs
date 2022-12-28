@@ -11,6 +11,10 @@
 
         public void TransferToBalance(int amount, Balance balance)
         {
+            if (Amount < amount)
+            {
+                throw new Exception("Not enough money :((");
+            }
             Amount -= amount;
             balance.Amount += amount;
         }

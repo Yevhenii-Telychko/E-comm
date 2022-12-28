@@ -6,6 +6,5 @@ class Program
     {
         Store store = new Store();
         store.Run();
-
     }
 }

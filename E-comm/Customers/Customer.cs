@@ -27,16 +27,32 @@ namespace E_comm
 
         public virtual void AddCard(string cardNumber, string cardPassword, string cvv)
         {
-            Card card = new Card(cardNumber, cardPassword, cvv);
-            Cards.Add(card);
-            Console.WriteLine("Successfully added");
+            try
+            {
+                Card card = new Card(cardNumber, cardPassword, cvv);
+                Cards.Add(card);
+                Console.WriteLine("Successfully added");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         public virtual void AddBalance(int amount)
         {
-            Cash.TransferToBalance(amount, Balance);
-            Console.WriteLine("Chin chin...\n");
-            ShowAllMoney();
+            try
+            {
+                Cash.TransferToBalance(amount, Balance);
+                Console.WriteLine("Chin chin...\n");
+                ShowAllMoney();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         public virtual void AddToCart()
