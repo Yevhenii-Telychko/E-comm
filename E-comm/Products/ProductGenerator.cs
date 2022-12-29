@@ -2,13 +2,13 @@
 {
     public class ProductGenerator
     {
-        Dictionary<string, string> productsBase = new Dictionary<string, string>()
+        Dictionary<string, double> productsBase = new Dictionary<string, double>()
         {
-            {"Iphone 14", "1200$" },
-            {"AirPods Pro", "270$" },
-            {"MacBook Pro", "2700$" },
-            {"IPad Pro", "1400$" },
-            {"Dyson", "600$" },
+            {"Iphone 14", 1200 },
+            {"AirPods Pro", 270 },
+            {"MacBook Pro", 2700 },
+            {"IPad Pro",1400 },
+            {"Dyson", 600 },
         };
 
         List<Dictionary<string, string>> productsDescrition = new List<Dictionary<string, string>>()

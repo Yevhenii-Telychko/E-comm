@@ -60,51 +60,62 @@ namespace E_comm
                         }
                         Console.WriteLine("Your choice: ");
                         int productNumber = Convert.ToInt32(Console.ReadLine());
+                        Product product;
                         switch (productNumber)
                         {
                             case 1:
-                                products[productNumber - 1].View();
-                                products[productNumber - 1].Description.View();
-                                Console.WriteLine("1. Buy\n2. Go back");
+                                product = products[productNumber - 1];
+                                product.View();
+                                product.Description.View();
+                                Console.WriteLine("1. Add to the cart\n2. Go back");
                                 if (Convert.ToInt32(Console.ReadLine()) == 1)
                                 {
-                                    Console.WriteLine("Congrats");
+                                    product.Price = customer.UpdatePrice(product.Price);
+                                    customer.AddToCart(product);
                                 }
                                 break;
                             case 2:
-                                products[productNumber - 1].View();
-                                products[productNumber - 1].Description.View();
-                                Console.WriteLine("1. Buy\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine) == 1)
+                                product = products[productNumber - 1];
+                                product.View();
+                                product.Description.View();
+                                Console.WriteLine("1. Add to the cart\n2. Go back");
+                                if (Convert.ToInt32(Console.ReadLine()) == 1)
                                 {
-                                    Console.WriteLine("Congrats");
+                                    customer.UpdatePrice(product.Price);
+                                    customer.AddToCart(product);
                                 }
                                 break;
                             case 3:
-                                products[productNumber - 1].View();
-                                products[productNumber - 1].Description.View();
-                                Console.WriteLine("1. Buy\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine) == 1)
+                                product = products[productNumber - 1];
+                                product.View();
+                                product.Description.View();
+                                Console.WriteLine("1. Add to the cart\n2. Go back");
+                                if (Convert.ToInt32(Console.ReadLine()) == 1)
                                 {
-                                    Console.WriteLine("Congrats");
+                                    customer.UpdatePrice(product.Price);
+                                    customer.AddToCart(product);
                                 }
                                 break;
                             case 4:
-                                products[productNumber - 1].View();
-                                products[productNumber - 1].Description.View();
-                                Console.WriteLine("1. Buy\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine) == 1)
+                                product = products[productNumber - 1];
+                                product.View();
+                                product.Description.View();
+                                Console.WriteLine("1. Add to the cart\n2. Go back");
+                                if (Convert.ToInt32(Console.ReadLine()) == 1)
                                 {
-                                    Console.WriteLine("Congrats");
+                                    customer.UpdatePrice(product.Price);
+                                    customer.AddToCart(product);
                                 }
                                 break;
                             case 5:
-                                products[productNumber - 1].View();
-                                products[productNumber - 1].Description.View();
-                                Console.WriteLine("1. Buy\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine) == 1)
+                                product = products[productNumber - 1];
+                                product.View();
+                                product.Description.View();
+                                Console.WriteLine("1. Add to the cart\n2. Go back");
+                                if (Convert.ToInt32(Console.ReadLine()) == 1)
                                 {
-                                    Console.WriteLine("Congrats");
+                                    customer.UpdatePrice(product.Price);
+                                    customer.AddToCart(product);
                                 }
                                 break;
                             default:
@@ -126,6 +137,7 @@ namespace E_comm
                         customer.AddBalance(amount);
                         break;
                     case 4:
+                        customer.CustomerCart.CheckCart();
                         break;
                     case 5:
                     default:

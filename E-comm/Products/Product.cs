@@ -7,10 +7,10 @@ namespace E_comm
         private static int idGenerator = 1234;
         public int ProductId { get; set; }
         public string Name { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
         public ProductDescription Description { get; set; }
 
-        public Product(string name, string price)
+        public Product(string name, double price)
         {
             Name = name;
             Price = price;
@@ -18,7 +18,7 @@ namespace E_comm
 
         public void View()
         {
-            Console.WriteLine($"Name: {Name} Price: {Price}");
+            Console.WriteLine($"Name: {Name} Price: {Price}$");
         }
 
         public void AddDescription(Dictionary<string, string> descrition)

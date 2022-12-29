@@ -11,6 +11,7 @@ namespace E_comm
         public string Surname { get; set; }
         public Balance Balance { get; set; }
         public Cash Cash { get; set; }
+        public Cart CustomerCart { get; }
         public List<Card> Cards { get; set; }
 
         public Customer(string name, string surname)
@@ -20,6 +21,7 @@ namespace E_comm
             Cards = new List<Card>();
             Balance = new Balance();
             Cash = new Cash();
+            CustomerCart = new Cart();
             Id = ++IdGenerator;
         }
 
@@ -55,9 +57,9 @@ namespace E_comm
 
         }
 
-        public virtual void AddToCart()
+        public virtual void AddToCart(Product product)
         {
-
+            CustomerCart.AddProduct(product);
         }
 
         public virtual void ShowAllMoney()
