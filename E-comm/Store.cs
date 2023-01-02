@@ -149,7 +149,7 @@ namespace E_comm
                                     case 2:
                                         try
                                         {
-                                            new Cash().Pay(customer.CustomerCart.TotalPrice);
+                                            customer.Cash.Pay(customer.CustomerCart.TotalPrice);
                                             customer.CustomerCart.CartStorage.Clear();
                                         }
                                         catch (Exception error)
@@ -161,7 +161,7 @@ namespace E_comm
                                     case 3:
                                         try
                                         {
-                                            new Balance().Pay(customer.CustomerCart.TotalPrice);
+                                            customer.Balance.Pay(customer.CustomerCart.TotalPrice);
                                             customer.CustomerCart.CartStorage.Clear();
                                         }
                                         catch (Exception error)
