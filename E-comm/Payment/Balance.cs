@@ -2,16 +2,22 @@
 {
     public class Balance
     {
-        public int Amount { get; set; }
+        public double Amount { get; set; }
         public Balance()
         {
             Amount = 0;
         }
 
-        public void Pay(int price)
+        public void Pay(double price)
         {
+            if (Amount < price)
+            {
+                throw new Exception("Not enough money");
+            }
             Amount -= price;
+            Console.WriteLine("Success");
         }
+
     }
 
 }

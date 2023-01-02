@@ -28,9 +28,9 @@
             return cardNumber.Length == 16 && cardPassword.Length == 4 && cvv.Length == 3;
         }
 
-        public void Pay(int amount)
+        public void Pay(double amount)
         {
-
+            Console.WriteLine("Success");
         }
     }
 }

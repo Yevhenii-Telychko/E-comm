@@ -1,45 +1,67 @@
-﻿using E_comm.Products;
+﻿using E_comm.Payment;
+using E_comm.Products;
 
 namespace E_comm
 {
     public class Store
     {
-
-        public void Run()
+        public List<Customer> CustomerList { get; set; }
+        List<Product> Products { get; set; }
+        Customer customer { get; set; }
+        public Store()
         {
             CustomerController userController = new CustomerController();
-            List<Customer> customerList = new List<Customer>
+            CustomerList = new List<Customer>
             {
                 userController.getBaseCustomer(),
                 userController.getVipCustomer()
             };
-            Customer customer;
-
             ProductGenerator productGenerator = new ProductGenerator();
-            List<Product> products = productGenerator.InitProducts();
+            Products = productGenerator.InitProducts();
+        }
 
+        private void Greeting()
+        {
             Console.WriteLine("Welcome to our store\n" +
                 "Which customer are you:" +
                 "\n1. Customer" +
-                "\n2.Vip customer" +
+                "\n2. Vip customer" +
                 "\nYour choice:");
             int customerSelection = Convert.ToInt32(Console.ReadLine());
             switch (customerSelection)
             {
                 case 1:
-                    customer = customerList[0];
+                    customer = CustomerList[0];
                     break;
                 case 2:
-                    customer = customerList[1];
+                    customer = CustomerList[1];
                     break;
                 default:
                     Console.WriteLine("Okay, you will be a normal one.");
-                    customer = customerList[0];
+                    customer = CustomerList[0];
                     break;
             }
 
             Console.WriteLine($"Welcome {customer.Name} {customer.Surname}.");
             customer.ShowAllMoney();
+        }
+
+        private void ProductPage(int productNumber)
+        {
+            Product product = Products[productNumber - 1];
+            product.View();
+            product.Description.View();
+            Console.WriteLine("1. Add to the cart\n2. Go back");
+            if (Convert.ToInt32(Console.ReadLine()) == 1)
+            {
+                product.Price = customer.UpdatePrice(product.Price);
+                customer.AddToCart(product);
+            }
+        }
+        public void Run()
+        {
+            Greeting();
+
 
             bool isWorking = true;
             while (isWorking)
@@ -49,77 +71,23 @@ namespace E_comm
                                   "3. Add money to the balance\n" +
                                   "4. Check my cart\n" +
                                   "5. Exit");
-                customerSelection = Convert.ToInt32(Console.ReadLine());
+                int customerSelection = Convert.ToInt32(Console.ReadLine());
                 switch (customerSelection)
                 {
                     case 1:
-                        for (int i = 0; i < products.Count(); i++)
+                        for (int i = 0; i < Products.Count(); i++)
                         {
                             Console.Write($"{i + 1}. ");
-                            products[i].View();
+                            Products[i].View();
                         }
                         Console.WriteLine("Your choice: ");
-                        int productNumber = Convert.ToInt32(Console.ReadLine());
-                        Product product;
-                        switch (productNumber)
+
+                        string productNumber = Console.ReadLine();
+                        if (!string.IsNullOrEmpty(productNumber) &&
+                            productNumber.All(char.IsDigit) &&
+                            Convert.ToInt32(productNumber) < Products.Count())
                         {
-                            case 1:
-                                product = products[productNumber - 1];
-                                product.View();
-                                product.Description.View();
-                                Console.WriteLine("1. Add to the cart\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine()) == 1)
-                                {
-                                    product.Price = customer.UpdatePrice(product.Price);
-                                    customer.AddToCart(product);
-                                }
-                                break;
-                            case 2:
-                                product = products[productNumber - 1];
-                                product.View();
-                                product.Description.View();
-                                Console.WriteLine("1. Add to the cart\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine()) == 1)
-                                {
-                                    customer.UpdatePrice(product.Price);
-                                    customer.AddToCart(product);
-                                }
-                                break;
-                            case 3:
-                                product = products[productNumber - 1];
-                                product.View();
-                                product.Description.View();
-                                Console.WriteLine("1. Add to the cart\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine()) == 1)
-                                {
-                                    customer.UpdatePrice(product.Price);
-                                    customer.AddToCart(product);
-                                }
-                                break;
-                            case 4:
-                                product = products[productNumber - 1];
-                                product.View();
-                                product.Description.View();
-                                Console.WriteLine("1. Add to the cart\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine()) == 1)
-                                {
-                                    customer.UpdatePrice(product.Price);
-                                    customer.AddToCart(product);
-                                }
-                                break;
-                            case 5:
-                                product = products[productNumber - 1];
-                                product.View();
-                                product.Description.View();
-                                Console.WriteLine("1. Add to the cart\n2. Go back");
-                                if (Convert.ToInt32(Console.ReadLine()) == 1)
-                                {
-                                    customer.UpdatePrice(product.Price);
-                                    customer.AddToCart(product);
-                                }
-                                break;
-                            default:
-                                break;
+                            ProductPage(Convert.ToInt32(productNumber));
                         }
                         break;
                     case 2:
@@ -138,6 +106,80 @@ namespace E_comm
                         break;
                     case 4:
                         customer.CustomerCart.CheckCart();
+                        Console.WriteLine("1.Buy products\n2.Go back");
+                        int customerChoise = Convert.ToInt32(Console.ReadLine());
+                        switch (customerChoise)
+                        {
+                            case 1:
+                                Console.WriteLine("Please, choose a payment method");
+                                Console.WriteLine("1.Card\n2.Cash\n3.Balance\n4.Go back");
+                                int paymentChoise = Convert.ToInt32(Console.ReadLine());
+                                switch (paymentChoise)
+                                {
+                                    case 1:
+                                        Console.WriteLine("1.Enter card");
+                                        if (customer.Cards.Count > 0)
+                                        {
+                                            Console.WriteLine("2.Use your card");
+                                        }
+                                        Console.WriteLine("3.Go back");
+                                        int cardChoice = Convert.ToInt32(Console.ReadLine());
+                                        switch (cardChoice)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("Enter card number:");
+                                                cardNumber = Console.ReadLine();
+                                                Console.WriteLine("Enter card password:");
+                                                cardPassword = Console.ReadLine();
+                                                Console.WriteLine("Enter card CVV:");
+                                                cardCVV = Console.ReadLine();
+                                                new Card(cardNumber, cardPassword, cardCVV).Pay(customer.CustomerCart.TotalPrice);
+                                                customer.CustomerCart.CartStorage.Clear();
+                                                break;
+                                            case 2:
+                                                customer.Cards[0].Pay(customer.CustomerCart.TotalPrice);
+                                                customer.CustomerCart.CartStorage.Clear();
+                                                break;
+                                            case 3:
+                                            default:
+                                                break;
+                                        }
+
+                                        break;
+                                    case 2:
+                                        try
+                                        {
+                                            new Cash().Pay(customer.CustomerCart.TotalPrice);
+                                            customer.CustomerCart.CartStorage.Clear();
+                                        }
+                                        catch (Exception error)
+                                        {
+                                            Console.WriteLine($"{error.Message}");
+                                        }
+
+                                        break;
+                                    case 3:
+                                        try
+                                        {
+                                            new Balance().Pay(customer.CustomerCart.TotalPrice);
+                                            customer.CustomerCart.CartStorage.Clear();
+                                        }
+                                        catch (Exception error)
+                                        {
+                                            Console.WriteLine($"{error.Message}");
+                                        }
+
+                                        break;
+                                    case 4:
+                                    default:
+                                        break;
+                                }
+                                break;
+                            case 2:
+                            default:
+                                break;
+                        }
+
                         break;
                     case 5:
                     default:

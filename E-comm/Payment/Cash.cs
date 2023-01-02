@@ -2,11 +2,11 @@
 {
     public class Cash
     {
-        public int Amount { get; set; }
+        public double Amount { get; set; }
 
         public Cash()
         {
-            Amount = 100000;
+            Amount = 10000;
         }
 
         public void TransferToBalance(int amount, Balance balance)
@@ -18,5 +18,18 @@
             Amount -= amount;
             balance.Amount += amount;
         }
+
+        public void Pay(double price)
+        {
+            if (Amount < price)
+            {
+                throw new Exception("Not enough money");
+            }
+            Amount -= price;
+            Console.WriteLine("Success");
+        }
+
+
+
     }
 }
