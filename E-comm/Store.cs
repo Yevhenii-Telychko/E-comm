@@ -10,12 +10,12 @@ namespace E_comm
         Customer customer { get; set; }
         public Store()
         {
-            GenerateCustomer();
+            CustomerList = GenerateCustomer();
             ProductGenerator productGenerator = new ProductGenerator();
             Products = productGenerator.InitProducts();
         }
 
-        private void GenerateCustomer()
+        private List<Customer> GenerateCustomer()
         {
             CustomerController userController = new CustomerController();
             string credentials;
@@ -28,7 +28,7 @@ namespace E_comm
             string name = credentials.Split(' ')[0];
             string surname = credentials.Split(' ')[1];
 
-            CustomerList = new List<Customer>
+            return new List<Customer>
             {
                 userController.getBaseCustomer(name, surname),
                 userController.getVipCustomer(name, surname)
@@ -74,6 +74,86 @@ namespace E_comm
                 customer.AddToCart(product);
             }
         }
+
+        public string[] EnterCardDetails()
+        {
+            Console.WriteLine("Enter card number:");
+            string cardNumber = Console.ReadLine();
+            Console.WriteLine("Enter card password:");
+            string cardPassword = Console.ReadLine();
+            Console.WriteLine("Enter card CVV:");
+            string cardCVV = Console.ReadLine();
+            return new string[] { cardNumber, cardPassword, cardCVV };
+        }
+
+        public void PaymentNavigation()
+        {
+            Console.WriteLine("Please, choose a payment method");
+            Console.WriteLine("1.Card\n2.Cash\n3.Balance\n4.Go back");
+            int paymentChoise = Convert.ToInt32(Console.ReadLine());
+            switch (paymentChoise)
+            {
+                case 1:
+                    Console.WriteLine("1.Enter card");
+                    if (customer.Cards.Count > 0)
+                    {
+                        Console.WriteLine("2.Use your card");
+                    }
+                    Console.WriteLine("3.Go back");
+                    int cardChoice = Convert.ToInt32(Console.ReadLine());
+                    switch (cardChoice)
+                    {
+                        case 1:
+                            string[] cardDetails = EnterCardDetails();
+                            new Card(cardDetails[0], cardDetails[1], cardDetails[2]).Pay(customer.CustomerCart.TotalPrice);
+                            customer.CustomerCart.CartStorage.Clear();
+                            break;
+                        case 2:
+                            Console.WriteLine("Enter the name of the card");
+                            string cardName = Console.ReadLine();
+                            if (!customer.Cards.ContainsKey(cardName))
+                            {
+                                Console.WriteLine("there is no card like that");
+                                break;
+                            }
+                            customer.Cards[cardName].Pay(customer.CustomerCart.TotalPrice);
+                            customer.CustomerCart.CartStorage.Clear();
+                            break;
+                        case 3:
+                        default:
+                            break;
+                    }
+
+                    break;
+                case 2:
+                    try
+                    {
+                        customer.Cash.Pay(customer.CustomerCart.TotalPrice);
+                        customer.CustomerCart.CartStorage.Clear();
+                    }
+                    catch (Exception error)
+                    {
+                        Console.WriteLine($"{error.Message}");
+                    }
+
+                    break;
+                case 3:
+                    try
+                    {
+                        customer.Balance.Pay(customer.CustomerCart.TotalPrice);
+                        customer.CustomerCart.CartStorage.Clear();
+                    }
+                    catch (Exception error)
+                    {
+                        Console.WriteLine($"{error.Message}");
+                    }
+
+                    break;
+                case 4:
+                default:
+                    break;
+            }
+        }
         public void Run()
         {
             Greeting();
@@ -107,13 +187,11 @@ namespace E_comm
                         }
                         break;
                     case 2:
-                        Console.WriteLine("Enter card number:");
-                        string cardNumber = Console.ReadLine();
-                        Console.WriteLine("Enter card password:");
-                        string cardPassword = Console.ReadLine();
-                        Console.WriteLine("Enter card CVV:");
-                        string cardCVV = Console.ReadLine();
-                        customer.AddCard(cardNumber, cardPassword, cardCVV);
+                        Console.WriteLine("Enter the name of the card");
+                        string cardName = Console.ReadLine();
+                        if (string.IsNullOrEmpty(cardName)) cardName = $"card {customer.Cards.Count + 1}";
+                        string[] cardDetails = EnterCardDetails();
+                        customer.AddCard(cardName, cardDetails[0], cardDetails[1], cardDetails[2]);
                         break;
                     case 3:
                         Console.WriteLine("Enter amount of money:");
@@ -127,69 +205,7 @@ namespace E_comm
                         switch (customerChoise)
                         {
                             case 1:
-                                Console.WriteLine("Please, choose a payment method");
-                                Console.WriteLine("1.Card\n2.Cash\n3.Balance\n4.Go back");
-                                int paymentChoise = Convert.ToInt32(Console.ReadLine());
-                                switch (paymentChoise)
-                                {
-                                    case 1:
-                                        Console.WriteLine("1.Enter card");
-                                        if (customer.Cards.Count > 0)
-                                        {
-                                            Console.WriteLine("2.Use your card");
-                                        }
-                                        Console.WriteLine("3.Go back");
-                                        int cardChoice = Convert.ToInt32(Console.ReadLine());
-                                        switch (cardChoice)
-                                        {
-                                            case 1:
-                                                Console.WriteLine("Enter card number:");
-                                                cardNumber = Console.ReadLine();
-                                                Console.WriteLine("Enter card password:");
-                                                cardPassword = Console.ReadLine();
-                                                Console.WriteLine("Enter card CVV:");
-                                                cardCVV = Console.ReadLine();
-                                                new Card(cardNumber, cardPassword, cardCVV).Pay(customer.CustomerCart.TotalPrice);
-                                                customer.CustomerCart.CartStorage.Clear();
-                                                break;
-                                            case 2:
-                                                customer.Cards[0].Pay(customer.CustomerCart.TotalPrice);
-                                                customer.CustomerCart.CartStorage.Clear();
-                                                break;
-                                            case 3:
-                                            default:
-                                                break;
-                                        }
-
-                                        break;
-                                    case 2:
-                                        try
-                                        {
-                                            customer.Cash.Pay(customer.CustomerCart.TotalPrice);
-                                            customer.CustomerCart.CartStorage.Clear();
-                                        }
-                                        catch (Exception error)
-                                        {
-                                            Console.WriteLine($"{error.Message}");
-                                        }
-
-                                        break;
-                                    case 3:
-                                        try
-                                        {
-                                            customer.Balance.Pay(customer.CustomerCart.TotalPrice);
-                                            customer.CustomerCart.CartStorage.Clear();
-                                        }
-                                        catch (Exception error)
-                                        {
-                                            Console.WriteLine($"{error.Message}");
-                                        }
-
-                                        break;
-                                    case 4:
-                                    default:
-                                        break;
-                                }
+                                PaymentNavigation();
                                 break;
                             case 2:
                             default:

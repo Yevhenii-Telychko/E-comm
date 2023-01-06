@@ -12,13 +12,13 @@ namespace E_comm
         public Balance Balance { get; set; }
         public Cash Cash { get; set; }
         public Cart CustomerCart { get; }
-        public List<Card> Cards { get; set; }
+        public Dictionary<string, Card> Cards { get; set; }
 
         public Customer(string name, string surname)
         {
             Name = name;
             Surname = surname;
-            Cards = new List<Card>();
+            Cards = new Dictionary<string, Card>();
             Balance = new Balance();
             Cash = new Cash();
             CustomerCart = new Cart();
@@ -27,12 +27,13 @@ namespace E_comm
 
         public abstract double UpdatePrice(double price);
 
-        public virtual void AddCard(string cardNumber, string cardPassword, string cvv)
+        public virtual void AddCard(string cardName, string cardNumber, string cardPassword, string cvv)
         {
             try
             {
+
                 Card card = new Card(cardNumber, cardPassword, cvv);
-                Cards.Add(card);
+                Cards.Add(cardName, card);
                 Console.WriteLine("Successfully added");
             }
             catch (Exception e)
