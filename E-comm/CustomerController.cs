@@ -3,14 +3,14 @@
 
     class CustomerController
     {
-        public Customer getBaseCustomer()
+        public Customer getBaseCustomer(string name, string surname)
         {
-            return new BaseCustomer("Yevhenii", "Telychko");
+            return new BaseCustomer(name, surname);
         }
 
-        public Customer getVipCustomer()
+        public Customer getVipCustomer(string name, string surname)
         {
-            return new VipCustomer("Yevhenii", "Telychko");
+            return new VipCustomer(name, surname);
         }
     }
 

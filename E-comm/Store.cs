@@ -10,16 +10,32 @@ namespace E_comm
         Customer customer { get; set; }
         public Store()
         {
-            CustomerController userController = new CustomerController();
-            CustomerList = new List<Customer>
-            {
-                userController.getBaseCustomer(),
-                userController.getVipCustomer()
-            };
+            GenerateCustomer();
             ProductGenerator productGenerator = new ProductGenerator();
             Products = productGenerator.InitProducts();
         }
 
+        private void GenerateCustomer()
+        {
+            CustomerController userController = new CustomerController();
+            string credentials;
+            do
+            {
+                Console.WriteLine("Enter your name and surname");
+                credentials = Console.ReadLine();
+            } while (string.IsNullOrEmpty(credentials));
+
+            string name = credentials.Split(' ')[0];
+            string surname = credentials.Split(' ')[1];
+
+            CustomerList = new List<Customer>
+            {
+                userController.getBaseCustomer(name, surname),
+                userController.getVipCustomer(name, surname)
+            };
+
+
+        }
         private void Greeting()
         {
             Console.WriteLine("Welcome to our store\n" +
