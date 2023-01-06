@@ -166,7 +166,8 @@ namespace E_comm
                                   "2. Add my credit card\n" +
                                   "3. Add money to the balance\n" +
                                   "4. Check my cart\n" +
-                                  "5. Exit");
+                                  "5. Check the balance\n" +
+                                  "6. Exit");
                 int customerSelection = Convert.ToInt32(Console.ReadLine());
                 switch (customerSelection)
                 {
@@ -214,6 +215,9 @@ namespace E_comm
 
                         break;
                     case 5:
+                        customer.ShowAllMoney();
+                        break;
+                    case 6:
                     default:
                         Console.WriteLine("Bye Bye");
                         isWorking = false;
